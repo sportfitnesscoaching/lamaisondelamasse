@@ -1,22 +1,25 @@
 @import "tailwindcss";
 
 :root {
-  --background: #FAFAFA;
-  --foreground: #1C1C1C;
-  --accent: #C9A84C;
-  --accent-light: #E8C96E;
-  --muted: #6B6B6B;
-  --surface: #F0F0F0;
+  --bg: #0B0B0B;
+  --surface: #111111;
+  --surface-alt: #0F0F0F;
+  --gold: #D4AF37;
+  --gold-light: #E8CC7A;
+  --gold-dark: #B8960C;
+  --gold-border: rgba(212, 175, 55, 0.18);
+  --gold-glow: rgba(212, 175, 55, 0.07);
+  --text-dim: #888888;
+  --text-muted: #555555;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-accent: var(--accent);
-  --color-accent-light: var(--accent-light);
-  --color-muted: var(--muted);
+  --color-bg: var(--bg);
   --color-surface: var(--surface);
-  --font-sans: var(--font-inter);
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --font-display: var(--font-space-grotesk);
+  --font-body: var(--font-inter);
 }
 
 html {
@@ -24,7 +27,83 @@ html {
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-inter), system-ui, sans-serif;
+  background: #0B0B0B;
+  color: #fff;
+  font-family: var(--font-inter, system-ui, sans-serif);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+/* Gold gradient text */
+.gold-text {
+  background: linear-gradient(135deg, #D4AF37 0%, #E8CC7A 45%, #B8960C 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Section heading pattern */
+.section-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.section-label-line {
+  height: 1px;
+  width: 40px;
+}
+
+.section-label-text {
+  color: #D4AF37;
+  font-size: 10.5px;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  font-family: var(--font-space-grotesk, sans-serif);
+  white-space: nowrap;
+}
+
+/* Fade-up animation via JS toggle */
+.fade-target {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fade-target.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Scroll indicator animation */
+@keyframes scrollPulse {
+  0% { transform: translateY(-100%); opacity: 0; }
+  25%, 75% { opacity: 1; }
+  100% { transform: translateY(100%); opacity: 0; }
+}
+
+.scroll-line-inner {
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent, #D4AF37, transparent);
+  animation: scrollPulse 2.5s ease-in-out infinite;
+}
+
+/* Card hover glow */
+.card-hover {
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+.card-hover:hover {
+  border-color: rgba(212, 175, 55, 0.4) !important;
+  box-shadow: 0 0 40px rgba(212, 175, 55, 0.04);
+  transform: translateY(-2px);
+}
+
+/* Premium scrollbar */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: #0B0B0B; }
+::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 2px; }
+* { scrollbar-width: thin; scrollbar-color: #D4AF37 #0B0B0B; }

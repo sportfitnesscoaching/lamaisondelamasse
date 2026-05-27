@@ -1,23 +1,21 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import Services from "@/components/Services";
+import Concept from "@/components/Concept";
+import Amenities from "@/components/Amenities";
+import B2B from "@/components/B2B";
 import Pricing from "@/components/Pricing";
-import Testimonials from "@/components/Testimonials";
-import About from "@/components/About";
-import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
     <>
       <Navbar />
-      <main>
+      <main role="main">
         <Hero />
-        <Services />
+        <Concept />
+        <Amenities />
+        <B2B />
         <Pricing />
-        <Testimonials />
-        <About />
-        <Contact />
       </main>
       <Footer />
     </>

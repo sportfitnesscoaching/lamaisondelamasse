@@ -1,96 +1,251 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-const navLinks = [
-  { label: "Services", href: "#services" },
-  { label: "Tarifs", href: "#tarifs" },
-  { label: "Témoignages", href: "#temoignages" },
-  { label: "À propos", href: "#apropos" },
+const NAV_LINKS = [
+  { label: "The Concept", href: "#concept" },
+  { label: "Amenities", href: "#amenities" },
+  { label: "Membership", href: "#pricing" },
   { label: "Contact", href: "#contact" },
 ];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
+    const handle = () => setScrolled(window.scrollY > 60);
+    window.addEventListener("scroll", handle, { passive: true });
+    return () => window.removeEventListener("scroll", handle);
   }, []);
 
+  const navBg = scrolled
+    ? "rgba(11,11,11,0.94)"
+    : "transparent";
+
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? "bg-white/95 backdrop-blur-sm shadow-sm" : "bg-transparent"
-      }`}
-    >
-      <nav className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        <a href="#" className="flex items-center gap-2 group">
-          <span className="text-xl font-bold tracking-tight text-[#1C1C1C]">
-            La Maison
-          </span>
-          <span className="text-xl font-bold tracking-tight text-[#C9A84C]">
+    <>
+      <header
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 100,
+          height: "72px",
+          display: "flex",
+          alignItems: "center",
+          padding: "0 2rem",
+          background: navBg,
+          backdropFilter: scrolled ? "blur(16px)" : "none",
+          WebkitBackdropFilter: scrolled ? "blur(16px)" : "none",
+          borderBottom: scrolled
+            ? "1px solid rgba(212,175,55,0.1)"
+            : "1px solid transparent",
+          transition:
+            "background 0.4s ease, backdrop-filter 0.4s ease, border-color 0.4s ease",
+        }}
+      >
+        {/* Logo */}
+        <a
+          href="#hero"
+          aria-label="La Maison de la Masse — Home"
+          style={{
+            fontFamily: "var(--font-space-grotesk, sans-serif)",
+            fontWeight: 700,
+            fontSize: "13.5px",
+            letterSpacing: "0.12em",
+            textTransform: "uppercase",
+            textDecoration: "none",
+            color: "#fff",
+            whiteSpace: "nowrap",
+          }}
+        >
+          La Maison{" "}
+          <span
+            style={{
+              background:
+                "linear-gradient(135deg, #D4AF37 0%, #E8CC7A 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
+          >
             de la Masse
           </span>
         </a>
 
-        <ul className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <li key={link.href}>
-              <a
-                href={link.href}
-                className="text-sm font-medium text-[#6B6B6B] hover:text-[#1C1C1C] transition-colors"
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-
-        <a
-          href="#contact"
-          className="hidden md:inline-flex items-center px-5 py-2.5 bg-[#C9A84C] text-white text-sm font-semibold rounded-full hover:bg-[#B8963E] transition-colors"
+        {/* Desktop nav */}
+        <nav
+          role="navigation"
+          aria-label="Main navigation"
+          className="hidden md:flex"
+          style={{
+            marginLeft: "auto",
+            marginRight: "2rem",
+            display: "flex",
+            alignItems: "center",
+            gap: "2.5rem",
+          }}
         >
-          Commencer
+          {NAV_LINKS.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              style={{
+                fontFamily: "var(--font-space-grotesk, sans-serif)",
+                fontSize: "10.5px",
+                letterSpacing: "0.22em",
+                textTransform: "uppercase",
+                color: "#888",
+                textDecoration: "none",
+                transition: "color 0.2s ease",
+              }}
+              onMouseEnter={(e) =>
+                ((e.currentTarget as HTMLAnchorElement).style.color = "#D4AF37")
+              }
+              onMouseLeave={(e) =>
+                ((e.currentTarget as HTMLAnchorElement).style.color = "#888")
+              }
+            >
+              {link.label}
+            </a>
+          ))}
+        </nav>
+
+        {/* Book Now */}
+        <a
+          href="https://la-maison-de-la-masse-dubai.gymdesk.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hidden md:inline-block"
+          aria-label="Book your session"
+          style={{
+            padding: "10px 22px",
+            background: "linear-gradient(135deg, #D4AF37 0%, #B8960C 100%)",
+            color: "#0B0B0B",
+            fontFamily: "var(--font-space-grotesk, sans-serif)",
+            fontWeight: 700,
+            fontSize: "10.5px",
+            letterSpacing: "0.2em",
+            textTransform: "uppercase",
+            textDecoration: "none",
+            transition: "opacity 0.2s ease",
+            flexShrink: 0,
+          }}
+          onMouseEnter={(e) =>
+            ((e.currentTarget as HTMLAnchorElement).style.opacity = "0.82")
+          }
+          onMouseLeave={(e) =>
+            ((e.currentTarget as HTMLAnchorElement).style.opacity = "1")
+          }
+        >
+          Book Now
         </a>
 
+        {/* Mobile hamburger */}
         <button
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="md:hidden p-2 text-[#1C1C1C]"
-          aria-label="Menu"
+          onClick={() => setOpen(!open)}
+          className="md:hidden"
+          aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
+          style={{
+            marginLeft: "auto",
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            padding: "8px",
+            display: "flex",
+            flexDirection: "column",
+            gap: "5px",
+          }}
         >
-          <div className="w-5 h-0.5 bg-current mb-1.5" />
-          <div className="w-5 h-0.5 bg-current mb-1.5" />
-          <div className="w-5 h-0.5 bg-current" />
+          {[0, 1, 2].map((i) => (
+            <span
+              key={i}
+              style={{
+                display: "block",
+                width: "22px",
+                height: "1px",
+                background:
+                  open && i === 1 ? "transparent" : "#D4AF37",
+                transformOrigin: "center",
+                transform:
+                  open
+                    ? i === 0
+                      ? "rotate(45deg) translate(4px, 4px)"
+                      : i === 2
+                      ? "rotate(-45deg) translate(4px, -4px)"
+                      : "none"
+                    : "none",
+                transition: "transform 0.3s ease, opacity 0.3s ease",
+              }}
+            />
+          ))}
         </button>
-      </nav>
+      </header>
 
-      {menuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-100 px-6 py-4">
-          <ul className="flex flex-col gap-4">
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <a
-                  href={link.href}
-                  onClick={() => setMenuOpen(false)}
-                  className="text-sm font-medium text-[#1C1C1C]"
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))}
-          </ul>
+      {/* Mobile full-screen menu */}
+      <div
+        className="md:hidden"
+        style={{
+          position: "fixed",
+          top: "72px",
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: "rgba(11,11,11,0.98)",
+          backdropFilter: "blur(20px)",
+          zIndex: 99,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "2rem",
+          opacity: open ? 1 : 0,
+          pointerEvents: open ? "all" : "none",
+          transition: "opacity 0.3s ease",
+        }}
+      >
+        {NAV_LINKS.map((link) => (
           <a
-            href="#contact"
-            onClick={() => setMenuOpen(false)}
-            className="mt-4 block text-center px-5 py-2.5 bg-[#C9A84C] text-white text-sm font-semibold rounded-full"
+            key={link.href}
+            href={link.href}
+            onClick={() => setOpen(false)}
+            style={{
+              fontFamily: "var(--font-space-grotesk, sans-serif)",
+              fontWeight: 600,
+              fontSize: "20px",
+              letterSpacing: "0.18em",
+              textTransform: "uppercase",
+              color: "#fff",
+              textDecoration: "none",
+            }}
           >
-            Commencer
+            {link.label}
           </a>
-        </div>
-      )}
-    </header>
+        ))}
+        <a
+          href="https://la-maison-de-la-masse-dubai.gymdesk.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => setOpen(false)}
+          style={{
+            marginTop: "1rem",
+            padding: "16px 40px",
+            background: "linear-gradient(135deg, #D4AF37 0%, #B8960C 100%)",
+            color: "#0B0B0B",
+            fontFamily: "var(--font-space-grotesk, sans-serif)",
+            fontWeight: 700,
+            fontSize: "12px",
+            letterSpacing: "0.22em",
+            textTransform: "uppercase",
+            textDecoration: "none",
+          }}
+        >
+          Book Your Session
+        </a>
+      </div>
+    </>
   );
 }
